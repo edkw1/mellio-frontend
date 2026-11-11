@@ -1,0 +1,101 @@
+<div class="flex flex-col gap-4">
+    <p-breadcrumb [model]="breadcrumbItems" [home]="breadcrumbHome"></p-breadcrumb>
+
+    <p-toolbar>
+        <ng-template #start>
+            <p-button label="Новый" icon="pi pi-plus" severity="secondary" class="mr-2" (onClick)="new()" />
+            <p-button severity="secondary" label="Удалить" icon="pi pi-trash" outlined (onClick)="new()"
+                      [disabled]="!selectedCompetitions || !selectedCompetitions.length" />
+        </ng-template>
+
+        <ng-template #end>
+            <p-button label="Экспорт" icon="pi pi-upload" severity="secondary" (onClick)="new()" />
+        </ng-template>
+    </p-toolbar>
+
+    <p-table
+        #dt
+        [value]="competitions()"
+        [rows]="15"
+        [paginator]="true"
+        [globalFilterFields]="['name']"
+        [tableStyle]="{ 'min-width': '75rem' }"
+        [(selection)]="selectedCompetitions"
+        [rowHover]="true"
+        dataKey="id"
+        currentPageReportTemplate="Показано с {first} по {last} из {totalRecords} конкурсов"
+        [showCurrentPageReport]="true"
+        [rowsPerPageOptions]="[15, 25, 40]"
+    >
+        <ng-template #caption>
+            <div class="flex items-center justify-between">
+                <h5 class="m-0">Управление конкурсами</h5>
+                <p-iconfield>
+                    <p-inputicon class="pi pi-search" />
+                    <input pInputText type="text" (input)="onGlobalFilter(dt, $event)" placeholder="Поиск..." />
+                </p-iconfield>
+            </div>
+        </ng-template>
+        <ng-template #header>
+            <tr>
+                <th style="width: 3rem">
+                    <p-tableHeaderCheckbox />
+                </th>
+                <th pSortableColumn="name" style="min-width:16rem">
+                    Наименование
+                    <p-sortIcon field="name" />
+                </th>
+                <th pSortableColumn="startDate" style="min-width:10rem">
+                    Период
+                    <p-sortIcon field="startDate" />
+                </th>
+                <th pSortableColumn="status" style="min-width:10rem">
+                    Статус
+                    <p-sortIcon field="status" />
+                </th>
+                <th style="min-width: 12rem">
+                    Действия
+                </th>
+            </tr>
+        </ng-template>
+        <ng-template #body let-competition>
+            <tr>
+                <td style="width: 3rem">
+                    <p-tableCheckbox [value]="competition" />
+                </td>
+                <td style="min-width: 16rem">
+                    <a [routerLink]="['/competitions', competition.id, 'categories']"
+                       [state]="{ competitionName: competition.name }"
+                       class="link"
+                    >
+                        <span>{{ competition.name }}</span>
+                        <i class="pi pi-angle-right text-xs"></i>
+                    </a>
+                </td>
+                <td style="min-width: 16rem">{{ competition.startDate | date:'dd.MM.yyyy' }}
+                    - {{ competition.endDate | date:'dd.MM.yyyy' }}
+                </td>
+                <td style="min-width: 16rem">
+                    <p-tag [value]="getStatusText(competition.status)" [severity]="getSeverity(competition.status)" />
+                </td>
+                <td>
+                    <div class="flex items-center justify-center w-10 h-10">
+                        <p-button
+                            icon="pi pi-ellipsis-v"
+                            [rounded]="true"
+                            [text]="true"
+                            severity="secondary"
+                            (onClick)="openActions($event, competition, menu)"
+                        />
+                    </div>
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+
+    <p-menu
+        #menu
+        [model]="competitionActions"
+        [popup]="true"
+    />
+</div>

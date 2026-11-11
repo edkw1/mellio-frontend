@@ -24,6 +24,14 @@ export class AppMenu {
     ngOnInit() {
         this.model = [
             {
+                label: 'Управление',
+                items: [
+                    { label: 'Конкурсы', icon: 'pi pi-fw pi-calendar', routerLink: ['/competitions'] },
+                    { label: 'Эксперты', icon: 'pi pi-fw pi-user', routerLink: ['/users'] },
+                    { label: 'Отчеты', icon: 'pi pi-fw pi-chart-bar', routerLink: ['/results'] }
+                ]
+            },
+            {
                 label: 'Home',
                 items: [{ label: 'Dashboard', icon: 'pi pi-fw pi-home', routerLink: ['/'] }]
             },
@@ -63,7 +71,7 @@ export class AppMenu {
                         path: '/auth',
                         items: [
                             {
-                                label: 'Login',
+                                label: 'LoginComponent',
                                 icon: 'pi pi-fw pi-sign-in',
                                 routerLink: ['/auth/login']
                             },

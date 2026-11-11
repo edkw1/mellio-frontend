@@ -1,0 +1,78 @@
+<div class="flex flex-col gap-4">
+    <p-breadcrumb [model]="breadcrumbItems" [home]="breadcrumbHome"></p-breadcrumb>
+
+    <p-toolbar>
+        <ng-template #start>
+            <p-button label="Новый" icon="pi pi-plus" severity="secondary" class="mr-2" (onClick)="new()" />
+            <p-button severity="secondary" label="Удалить" icon="pi pi-trash" outlined (onClick)="new()"
+                      [disabled]="!selectedUsers || !selectedUsers.length" />
+        </ng-template>
+
+        <ng-template #end>
+            <p-button label="Экспорт" icon="pi pi-upload" severity="secondary" (onClick)="new()" />
+        </ng-template>
+    </p-toolbar>
+
+    <p-table
+        #dt
+        [value]="users()"
+        [rows]="15"
+        [paginator]="true"
+        [globalFilterFields]="['name']"
+        [tableStyle]="{ 'min-width': '75rem' }"
+        [(selection)]="selectedUsers"
+        [rowHover]="true"
+        dataKey="id"
+        currentPageReportTemplate="Показано с {first} по {last} из {totalRecords} номинаций"
+        [showCurrentPageReport]="true"
+        [rowsPerPageOptions]="[15, 25, 40]"
+    >
+        <ng-template #caption>
+            <div class="flex items-center justify-between">
+                <h5 class="m-0">Эксперты</h5>
+                <p-iconfield>
+                    <p-inputicon class="pi pi-search" />
+                    <input pInputText type="text" (input)="onGlobalFilter(dt, $event)" placeholder="Поиск..." />
+                </p-iconfield>
+            </div>
+        </ng-template>
+        <ng-template #header>
+            <tr>
+                <th style="width: 3rem">
+                    <p-tableHeaderCheckbox />
+                </th>
+                <th pSortableColumn="name" style="min-width:16rem">
+                    Логин
+                    <p-sortIcon field="name" />
+                </th>
+                <th pSortableColumn="startDate" style="min-width:10rem">
+                    ФИО
+                    <p-sortIcon field="startDate" />
+                </th>
+                <th pSortableColumn="startDate" style="min-width:10rem">
+                    Доступ
+                    <p-sortIcon field="startDate" />
+                </th>
+                <th style="min-width: 12rem"></th>
+            </tr>
+        </ng-template>
+        <ng-template #body let-user>
+            <tr>
+                <td style="width: 3rem">
+                    <p-tableCheckbox [value]="user" />
+                </td>
+                <td style="min-width: 16rem">{{ user.username }}</td>
+                <td style="min-width: 16rem">{{ user.fullName }}</td>
+                <td style="min-width: 16rem">
+                    <p-toggleswitch [(ngModel)]="user.enabled" />
+                </td>
+                <td>
+                    <p-button icon="pi pi-pencil" class="mr-2" [rounded]="true" [outlined]="true"
+                              (click)="editUser(user)" />
+                    <p-button icon="pi pi-trash" severity="danger" [rounded]="true" [outlined]="true"
+                              (click)="deleteUser(user)" />
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>

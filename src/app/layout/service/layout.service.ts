@@ -23,8 +23,8 @@ interface LayoutState {
 export class LayoutService {
     layoutConfig = signal<LayoutConfig>({
         preset: 'Aura',
-        primary: 'emerald',
-        surface: null,
+        primary: 'orange',
+        surface: 'zinc',
         darkTheme: false,
         menuMode: 'static'
     });

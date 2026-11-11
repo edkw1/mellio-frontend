@@ -2,3 +2,23 @@
 @use 'primeicons/primeicons.css';
 @use '@/assets/layout/layout.scss';
 @use '@/assets/demo/demo.scss';
+
+.link {
+    color: var(--p-primary-color);
+    font-weight: 500;
+    text-decoration: none;
+
+    .pi {
+        opacity: 0;
+        transition: opacity 0.2s, transform 0.2s;
+    }
+
+    &:hover {
+        text-decoration: underline;
+
+        .pi {
+            opacity: 1;
+            transform: translateX(3px);
+        }
+    }
+}
